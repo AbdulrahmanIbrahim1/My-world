@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>هدودة ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      font-family: "Cairo", sans-serif;
+    }
+
+    /* القلب */
+    .heart-draw {
+      position: absolute;
+      width: 250px;
+      height: 220px;
+      background: red;
+      transform: rotate(-45deg) scale(0);
+      animation: drawHeart 4s ease forwards;
+      z-index: 1;
+    }
+    .heart-draw::before,
+    .heart-draw::after {
+      content: "";
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart-draw::before {
+      top: -125px;
+      left: 0;
+    }
+    .heart-draw::after {
+      left: 125px;
+      top: 0;
+    }
+
+    @keyframes drawHeart {
+      to {
+        transform: rotate(-45deg) scale(1);
+      }
+    }
+
+    /* نبض القلب */
+    .pulse {
+      animation: heartbeat 1.5s infinite ease-in-out;
+    }
+    @keyframes heartbeat {
+      0%, 100% {
+        transform: rotate(-45deg) scale(1);
+      }
+      25% {
+        transform: rotate(-45deg) scale(1.1);
+      }
+      50% {
+        transform: rotate(-45deg) scale(0.95);
+      }
+      75% {
+        transform: rotate(-45deg) scale(1.05);
+      }
+    }
+
+    /* الظرف */
+    .envelope {
+      position: absolute;
+      top: -250px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 320px;
+      height: 200px;
+      background: #f5c542;
+      border: 3px solid #d4a017;
+      text-align: center;
+      line-height: 200px;
+      font-weight: bold;
+      color: black;
+      font-size: 22px;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 3s ease;
+      z-index: 3;
+    }
+    .envelope.show {
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+
+    /* الورقة */
+    .paper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 270px;
+      height: 120px;
+      background: white;
+      color: black;
+      font-size: 20px;
+      line-height: 1.8;
+      text-align: center;
+      padding: 25px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.8);
+      opacity: 0;
+      z-index: 2;
+      border-radius: 8px;
+    }
+    .paper.show {
+      transform: translate(-50%, -117%);
+      opacity: 1;
+      transition: all 3s ease;
+      height: 260px;
+    }
+
+    .text {
+      visibility: hidden;
+      white-space: pre-line;
+    }
+
+    @media (max-width: 600px) {
+      .heart-draw {
+        width: 180px;
+        height: 150px;
+      }
+      .heart-draw::before,
+      .heart-draw::after {
+        width: 180px;
+        height: 180px;
+      }
+
+      .envelope {
+        width: 250px;
+        height: 150px;
+        font-size: 18px;
+        line-height: 150px;
+      }
+      .paper {
+        width: 230px;
+        font-size: 16px;
+        padding: 15px;
+      }
+      .paper.show {
+        height: 220px;
+        transform: translate(-50%, -150%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="heart-draw" id="heart"></div>
+  <div class="envelope" id="envelope">إلى أشطر دكتورة أعرفها في حياتي ❤️</div>
+  <div class="paper" id="paper">
+    <span class="text" id="typedText">هدودة انتي أحلى هدية بعتهالي ربنا ❤️ وأحلى حاجة في حياتي❤️❤️
+    ربنا ما يحرمنيش منك يا رب ❤️ وربنا يوفقك دايما يا حبيبتي ❤️
+    </span>
+  </div>
+
+  <script>
+    const heart = document.getElementById("heart");
+
+    // بعد ما يخلص رسم القلب يخفق
+    setTimeout(() => {
+      heart.classList.add("pulse");
+    }, 4000);
+
+    // بعد ما يخلص القلب يظهر الظرف
+    setTimeout(() => {
+      document.getElementById("envelope").classList.add("show");
+    }, 4500);
+
+    // لما تدوس على الظرف
+    document.getElementById("envelope").addEventListener("click", () => {
+      const paper = document.getElementById("paper");
+      paper.classList.add("show");
+
+      // تشغيل الكتابة بعد ما الورقة تطلع
+      setTimeout(() => {
+        typeWriter("typedText");
+      }, 2500);
+    });
+
+    function typeWriter(id) {
+      const element = document.getElementById(id);
+      const text = element.textContent;
+      element.textContent = "";
+      element.style.visibility = "visible";
+      let i = 0;
+      function typing() {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          i++;
+          setTimeout(typing, 80);
+        }
+      }
+      typing();
+    }
+  </script>
+</body>
+</html>
